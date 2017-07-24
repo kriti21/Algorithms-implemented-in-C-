@@ -18,7 +18,7 @@ int size(Node* root)
 {
     int count=0;
     Node *node = root;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         count += 1;
         node = node->next;
@@ -64,7 +64,7 @@ void pushBack(Node *root, int value)
 {
     Node *newnode = createNode(value);
     Node *node = root;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         node = node->next;
     }
@@ -76,7 +76,7 @@ int popBack(Node *root)
     int e;
     Node *node = root;
     Node *prev = NULL;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         prev = node;
         node = node->next;
@@ -100,7 +100,7 @@ int back(Node *root)
     if (isEmpty(root))
     return -1;
     Node *node = root;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         node = node->next;
     }
@@ -147,7 +147,7 @@ void removeValue(Node *root, int val)
     int k=0;
     Node *node = root;
     Node *prev = NULL;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         if (node->data != val)
         {
@@ -167,7 +167,7 @@ void removeValue(Node *root, int val)
 void printLinkedList(Node *root)
 {
     Node *node = root;
-    while (node->next != NULL)
+    while (node != NULL)
     {
         cout<<node->data<<" ";
         node = node->next;
@@ -184,8 +184,21 @@ int main()
     root->next->next = createNode(4);
     root->next->next->next = createNode(12);
     root->next->next->next->next = createNode(1);
+    cout<<isEmpty(root)<<endl;
     printLinkedList(root);
     int s = size(root);
     cout<<"Size : "<<s<<endl;
+    int item = nthItem(root, 3);
+    cout<<"3rd item : "<<item<<endl;
+    pushFront(root, 45);
+    pushFront(root, 7);
+    printLinkedList(root);
+    // cout<<popFront(root)<<endl;
+    // pushBack(root, 100);
+    // pushBack(root, 156);
+    // printLinkedList(root);
+    // cout<<popBack(root)<<endl;
+    // cout<<front(root)<<endl;
+    // cout<<back(root)<<endl;
     return 0;
 }
