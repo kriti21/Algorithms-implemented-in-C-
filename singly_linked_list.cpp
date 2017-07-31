@@ -43,28 +43,30 @@ int nthItem(Node *root, int n)
     return node->data;
 }
 
-void pushFront(Node *root, int value)
+Node* pushFront(Node *root, int value)
 {
     Node *newnode = createNode(value);
     newnode->next = root;
     root = newnode;
+    return root;
 }
 
-int popFront(Node *root)
+Node* popFront(Node *root)
 {
     int e;
     Node *delnode = root;
     root = root->next;
     e = delnode->data;
     free(delnode);
-    return e;
+    cout<<"Popped item : "<<e<<endl;
+    return root;
 }
 
 void pushBack(Node *root, int value)
 {
     Node *newnode = createNode(value);
     Node *node = root;
-    while (node != NULL)
+    while (node->next != NULL)
     {
         node = node->next;
     }
@@ -76,7 +78,7 @@ int popBack(Node *root)
     int e;
     Node *node = root;
     Node *prev = NULL;
-    while (node != NULL)
+    while (node->next != NULL)
     {
         prev = node;
         node = node->next;
@@ -100,15 +102,20 @@ int back(Node *root)
     if (isEmpty(root))
     return -1;
     Node *node = root;
-    while (node != NULL)
+    while (node->next != NULL)
     {
         node = node->next;
     }
     return node->data;
 }
 
-void insert(Node *root, int index, int value)
+Node* insert(Node *root, int index, int value)
 {
+    if (index == 0)
+    {
+        root = pushFront(root, value);
+        return root;
+    }
     Node *prev = NULL;
     Node *node = root;
     Node *newnode = createNode(value);
@@ -119,10 +126,18 @@ void insert(Node *root, int index, int value)
     }
     prev->next = newnode;
     newnode->next = node;
+    return root;
 }
 
-void erase(Node *root, int index)
+Node* erase(Node *root, int index)
 {
+    if (index == 0)
+    {
+        Node *delnode = root;
+        root = root->next;
+        free(delnode);
+        return root;
+    }
     Node *node = root;
     Node *prev = NULL;
     for (int i=0; i<index; i++)
@@ -132,6 +147,7 @@ void erase(Node *root, int index)
     }
     prev->next = node->next;
     free(node);
+    return root;
 }
 
 int value_n_from_end(Node *root, int n)
@@ -147,9 +163,9 @@ void removeValue(Node *root, int val)
     int k=0;
     Node *node = root;
     Node *prev = NULL;
-    while (node != NULL)
+    while (node->next != NULL)
     {
-        if (node->data != val)
+        if (node->data == val)
         {
             k = 1;
             break;
@@ -190,15 +206,34 @@ int main()
     cout<<"Size : "<<s<<endl;
     int item = nthItem(root, 3);
     cout<<"3rd item : "<<item<<endl;
-    pushFront(root, 45);
-    pushFront(root, 7);
+    root = pushFront(root, 45);
+    root = pushFront(root, 7);
     printLinkedList(root);
-    // cout<<popFront(root)<<endl;
-    // pushBack(root, 100);
-    // pushBack(root, 156);
-    // printLinkedList(root);
-    // cout<<popBack(root)<<endl;
-    // cout<<front(root)<<endl;
-    // cout<<back(root)<<endl;
+    root = popFront(root);
+    printLinkedList(root);
+    pushBack(root, 100);
+    pushBack(root, 156);
+    printLinkedList(root);
+    cout<<popBack(root)<<endl;
+    printLinkedList(root);
+    cout<<front(root)<<endl;
+    cout<<back(root)<<endl;
+    root = insert(root, 4, 77);
+    printLinkedList(root);
+    root = insert(root, 0, 89);
+    printLinkedList(root);
+    root = insert(root, 8, 90);
+    printLinkedList(root);
+    root = erase(root, 5);
+    printLinkedList(root);
+    root = erase(root, 0);
+    printLinkedList(root);
+    erase(root, 7);
+    printLinkedList(root);
+    cout<<"Nth value from end for n = 3 : "<<value_n_from_end(root, 3)<<endl;
+    removeValue(root, 67);
+    printLinkedList(root);
+    removeValue(root, 3);
+    printLinkedList(root);
     return 0;
 }
